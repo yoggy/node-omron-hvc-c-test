@@ -11,7 +11,7 @@
 //   $ npm install lodash
 //   $ npm install mqtt
 //   $ npm install confy
-//   $ EDITOR=vim ~/node_modules/confy/bin/confy set mqtt_hvcc_pub
+//   $ sudo EDITOR=vim ~/node_modules/confy/bin/confy set mqtt_hvcc_pub
 //
 //       {
 //         "host": "mqtt.example.com",
