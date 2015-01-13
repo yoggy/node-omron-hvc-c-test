@@ -12,6 +12,15 @@
 //   $ npm install mqtt
 //   $ npm install confy
 //   $ EDITOR=vim ~/node_modules/confy/bin/confy set mqtt_hvcc_pub
+//
+//       {
+//         "host": "mqtt.example.com",
+//         "port": 1883,
+//         "username": "username",
+//         "password": "password",
+//         "topic": "publish_topic"
+//       }
+//       
 //   $ sudo nodejs mqtt_hvcc_pub
 //
 
