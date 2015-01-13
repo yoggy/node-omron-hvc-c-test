@@ -20,8 +20,8 @@ how to use
 <pre>
 $ sudo apt-get install nodejs npm
 $ sudo apt-get install bluetooth bluez-utils libbluetooth-dev
-$ sudo npm install noble
-$ sudo npm install lodash
+$ npm install noble
+$ npm install lodash
 
 $ sudo hciconfig 
 hci1:   Type: BR/EDR  Bus: USB
