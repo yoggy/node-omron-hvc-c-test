@@ -1,6 +1,6 @@
 node-omron-hvc-c-test
 ====
-nodejsを使ったオムロンHVC-C1Bの制御テスト
+Node.jsを使ったオムロンHVC-C1Bの制御テスト
 
 * OMRON HVC-C1B
   * [http://plus-sensing.omron.co.jp/egg-project/product/](http://plus-sensing.omron.co.jp/egg-project/product/)
@@ -12,8 +12,30 @@ environment
 ----
 次の組み合わせで動作確認しています。
 
-  * Ubuntu 14.04.1 LTS
-  * Buffalo BSBT4D09BK (USBのBluetoothアダプタ。BLE対応)
+  * 構成その1
+    * GIGABYTE BRIX GB-XM1-3537
+    * Ubuntu 14.04.1 LTS
+    * Buffalo BSBT4D09BK (USBのBluetoothアダプタ。BLE対応)
+
+  * 構成その2
+    * Raspberry Pi Type B
+    * Raspbian (2014-12-24)
+    * Buffalo BSBT4D09BK (USBのBluetoothアダプタ。BLE対応)
+
+Raspberry Piで実行する場合は、デフォルトで入っているNode.jsが古いので、
+最新のNode.jsを自力でインストールしてください。
+
+<pre>
+$ sudo apt-get remove nodejs npm
+$ cd ~
+$ wget http://nodejs.org/dist/v0.10.35/node-v0.10.35.tar.gz
+$ tar xvfz node-v0.10.35.tar.gz
+$ cd node-v0.10.35/
+$ ./configure
+$ make
+$ sudo make install
+$ sudo ln -s /usr/local/bin/node /usr/local/bin/nodejs
+</pre>
 
 how to use
 ----
@@ -36,8 +58,11 @@ hci0:   Type: BR/EDR  Bus: USB
         RX bytes:212612 acl:32 sco:0 events:10041 errors:0
         TX bytes:3514 acl:30 sco:0 commands:192 errors:0
 
-  #### hci0 : built-in bluetooth adaptor
-  #### hci1 : Buffalo BSBT4D09BK
+        ※ hci0 はBRIX内蔵のBluetoothアダプタ。hci1はUSBで接続しているBluetoothアダプタ。
+        ※  Raspberry PiなどのBluetoothアダプタが1つしか搭載していない環境の場合は、hci0が1つだけ表示されます。
+
+※  内蔵アダプタを無効にしておきます。
+※  Raspberry PiなどのBluetoothアダプタが1つしか搭載していない環境の場合は、この操作の必要なありません。
 
 $ sudo hciconfig hci0 down
 
