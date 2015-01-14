@@ -130,3 +130,14 @@ hccv_execute() : response_code = 0
   .
 </pre>
 
+注意
+====
+execute.jsでは人体検出・手検出を無効に設定しています。
+有効にする場合は、「コマンド仕様書」のP.30を参考に
+実行する機能のビットを1に設定してください。
+
+* コマンド仕様書。p.30より
+  * ![http://gyazo.com/d2611c76ad6e069a4abb0189336d2866](http://gyazo.com/d2611c76ad6e069a4abb0189336d2866)
+
+* 設定箇所
+  * ![http://gyazo.com/39293242f706aefaa6ef51f0e0bf6a38](http://gyazo.com/39293242f706aefaa6ef51f0e0bf6a38)
