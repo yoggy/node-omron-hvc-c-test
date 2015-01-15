@@ -25,6 +25,8 @@ environment
 Raspberry Piで実行する場合は、デフォルトで入っているNode.jsが古いので、
 最新のNode.jsを自力でインストールしてください。
 
+nobleを使用しているので、Mac OS Xでも動作するかも？(未確認)
+
 <pre>
 $ sudo apt-get remove nodejs npm
 $ cd ~
