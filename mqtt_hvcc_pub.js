@@ -49,13 +49,13 @@ function publish_result(result) {
 	console.log("publish_result() : topic=" + config.topic);
 
 	if (result == null || result.face.length == 0) {
-		client.publish(config.topic, JSON.stringify({'detect' : false}));
+		client.publish(config.topic, JSON.stringify({'detect' : 0}));
 		return;
 	}
 
 	var face = result.face[0];
 
-	var h = {detect:true}
+	var h = {detect:result.length}
 
 	h.x              = face.x;
 	h.y              = face.y;
