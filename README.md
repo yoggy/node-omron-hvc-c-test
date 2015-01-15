@@ -42,9 +42,12 @@ nobleを使用しているので、Mac OS Xでも動作するかも？(未確認
 
 how to use
 ----
+Ubuntu 14.04.1 LTS環境でのセットアップ手順。
+
 <pre>
 $ sudo apt-get install nodejs npm
 $ sudo apt-get install bluetooth bluez-utils libbluetooth-dev
+
 $ npm install noble
 $ npm install lodash
 
