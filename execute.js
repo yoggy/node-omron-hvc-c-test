@@ -295,6 +295,13 @@ noble.on('discover', function(peripheral) {
 
 		console.log('HVC-C is found! uuid=' + uuid + ", localName=" + localName);
 
+		peripheral.on('disconnect', function() {
+			console.log('disconnect... : uuid=' + uuid);
+			console.log('start scanning...');
+			on_response = null;
+			noble.startScanning([], true);
+		});
+
 		peripheral.connect(function(err) {
 			console.log('connect... : uuid=' + uuid);
 
@@ -314,5 +321,5 @@ noble.on('discover', function(peripheral) {
 	}
 });
 
-noble.startScanning([], false);
+noble.startScanning([], true);
 
