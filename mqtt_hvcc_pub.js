@@ -380,7 +380,7 @@ noble.on('discover', function(peripheral) {
 				console.log('disconnect... : uuid=' + uuid);
 				console.log('start scanning...');
 				on_response = null;
-				noble.startScanning([], true);
+				noble.startScanning([], false);
 			});
 
 			peripheral.discoverServices([], function(err, services) {
@@ -399,5 +399,5 @@ noble.on('discover', function(peripheral) {
 	}
 });
 
-noble.startScanning([], true);
+noble.startScanning([], false);
 
