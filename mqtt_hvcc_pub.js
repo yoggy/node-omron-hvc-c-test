@@ -376,6 +376,13 @@ noble.on('discover', function(peripheral) {
 		peripheral.connect(function(err) {
 			console.log('connect... : uuid=' + uuid);
 
+			peripheral.on('disconnect', function() {
+				console.log('disconnect... : uuid=' + uuid);
+				console.log('start scanning...');
+				on_response = null;
+				noble.startScanning([], true);
+			});
+
 			peripheral.discoverServices([], function(err, services) {
 				service = _.find(services, function(s) {return s.uuid === service_uuid});
 				service.discoverCharacteristics([], function(err,chars) {
@@ -392,5 +399,5 @@ noble.on('discover', function(peripheral) {
 	}
 });
 
-noble.startScanning([], false);
+noble.startScanning([], true);
 
