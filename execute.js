@@ -286,6 +286,34 @@ function start_hvcc() {
 	});
 }
 
+function connect_hvcc(peripheral) {
+	var uuid = peripheral.uuid
+
+	peripheral.connect(function(err) {
+		console.log('connect... : uuid=' + uuid);
+
+		peripheral.on('disconnect', function() {
+			console.log('disconnect... : uuid=' + uuid);
+			console.log('start scanning...');
+			on_response = null;
+			noble.startScanning([], false);
+		});
+	
+		peripheral.discoverServices([], function(err, services) {
+			service = _.find(services, function(s) {return s.uuid === service_uuid});
+			service.discoverCharacteristics([], function(err,chars) {
+				rx = _.find(chars, function(c) {return c.uuid === rx_char_uuid});
+				tx = _.find(chars, function(c) {return c.uuid === tx_char_uuid});
+	
+				rx.notify(true);
+				rx.on('read', on_read);
+	
+				setTimeout(start_hvcc, 1000);
+			});
+		});
+	});
+}
+
 noble.on('discover', function(peripheral) {
 	var uuid = peripheral.uuid
     var localName = peripheral.advertisement.localName;
@@ -295,29 +323,9 @@ noble.on('discover', function(peripheral) {
 
 		console.log('HVC-C is found! uuid=' + uuid + ", localName=" + localName);
 
-		peripheral.on('disconnect', function() {
-			console.log('disconnect... : uuid=' + uuid);
-			console.log('start scanning...');
-			on_response = null;
-			noble.startScanning([], false);
-		});
-
-		peripheral.connect(function(err) {
-			console.log('connect... : uuid=' + uuid);
-
-			peripheral.discoverServices([], function(err, services) {
-				service = _.find(services, function(s) {return s.uuid === service_uuid});
-				service.discoverCharacteristics([], function(err,chars) {
-					rx = _.find(chars, function(c) {return c.uuid === rx_char_uuid});
-					tx = _.find(chars, function(c) {return c.uuid === tx_char_uuid});
-
-					rx.notify(true);
-					rx.on('read', on_read);
-
-					setTimeout(start_hvcc, 100);
-				});
-			});
-		});
+		setTimeout(function() {
+			connect_hvcc(peripheral);
+		}, 1000);
 	}
 });
 
