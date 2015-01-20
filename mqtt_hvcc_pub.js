@@ -137,6 +137,12 @@ function hvcc_send_cmd(buf) {
 
 function hvcc_version(callback) {
 	on_response = function(response_code, data) {
+		if (data.length < 19) {
+			console.log("hvcc_version() : invalid data.length...");
+			console.log("data.length=" + data.length);
+			console.log("data=" + data.toString('hex'));
+			return;
+		}
 		var str             = data.slice(0, 12).toString();
 		var major_version   = data.slice(12, 13).readUInt8(0);
 		var minor_version   = data.slice(13, 14).readUInt8(0);
@@ -364,34 +370,6 @@ function start_hvcc() {
 	});
 }
 
-function connect_hvcc(peripheral) {
-	var uuid = peripheral.uuid
-
-	peripheral.connect(function(err) {
-		console.log('connect... : uuid=' + uuid);
-
-		peripheral.on('disconnect', function() {
-			console.log('disconnect... : uuid=' + uuid);
-			console.log('start scanning...');
-			on_response = null;
-			noble.startScanning([], false);
-		});
-	
-		peripheral.discoverServices([], function(err, services) {
-			service = _.find(services, function(s) {return s.uuid === service_uuid});
-			service.discoverCharacteristics([], function(err,chars) {
-				rx = _.find(chars, function(c) {return c.uuid === rx_char_uuid});
-				tx = _.find(chars, function(c) {return c.uuid === tx_char_uuid});
-	
-				rx.notify(true);
-				rx.on('read', on_read);
-	
-				setTimeout(start_hvcc, 1000);
-			});
-		});
-	});
-}
-
 noble.on('discover', function(peripheral) {
 	var uuid = peripheral.uuid
     var localName = peripheral.advertisement.localName;
@@ -401,9 +379,32 @@ noble.on('discover', function(peripheral) {
 
 		console.log('HVC-C is found! uuid=' + uuid + ", localName=" + localName);
 
-		setTimeout(function() {
-			connect_hvcc(peripheral);
-		}, 1000);
+		peripheral.connect(function(err) {
+			console.log('connect... : uuid=' + uuid);
+
+			peripheral.on('disconnect', function() {
+				console.log('disconnect... : uuid=' + uuid);
+				console.log('start scanning...');
+				on_response = null;
+				clear_rx_buf();
+				noble.startScanning([], false);
+			});
+
+			setTimeout(function(){
+				peripheral.discoverServices([], function(err, services) {
+					service = _.find(services, function(s) {return s.uuid === service_uuid});
+					service.discoverCharacteristics([], function(err,chars) {
+						rx = _.find(chars, function(c) {return c.uuid === rx_char_uuid});
+						tx = _.find(chars, function(c) {return c.uuid === tx_char_uuid});
+
+						rx.notify(true);
+						rx.on('read', on_read);
+
+						setTimeout(start_hvcc, 1000);
+					});
+				});
+			}, 500);
+		});
 	}
 });
 
